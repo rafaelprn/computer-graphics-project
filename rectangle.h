@@ -1,6 +1,8 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
 #include <genericobject.h>
+#include "point.h"
+//#include "line.h"
 
 
 class Rectangle : public GenericObject

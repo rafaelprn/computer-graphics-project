@@ -10,18 +10,26 @@ CONFIG += c++17
 
 SOURCES += \
     genericobject.cpp \
+    line.cpp \
     main.cpp \
     mainwindow.cpp \
     matrix.cpp \
+    pentagon.cpp \
+    point.cpp \
     rectangle.cpp \
-    triangle.cpp
+    triangle.cpp \
+    window.cpp
 
 HEADERS += \
     genericobject.h \
+    line.h \
     mainwindow.h \
     matrix.h \
+    pentagon.h \
+    point.h \
     rectangle.h \
-    triangle.h
+    triangle.h \
+    window.h
 
 FORMS += \
     mainwindow.ui

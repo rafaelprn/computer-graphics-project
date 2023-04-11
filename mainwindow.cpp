@@ -7,6 +7,8 @@
 #include <geometrictransformations.h>
 #include <matrix.h>
 #include <iostream>
+#include <pentagon.h>
+#include "window.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,13 +26,18 @@ void MainWindow::paintEvent(QPaintEvent *event){
 
     QList<GenericObject *> displayFile;
 
-    QList<QPoint> points = {QPoint(50, 50), QPoint(100, 50), QPoint(100, 100), QPoint(50, 100)};
+    Window window(0, 800, 0, 600, -300, 100, -200, 200);
+//    std::cout << window.getViewportX(0) << std::endl;
+//    std::cout << window.getViewportY(0) << std::endl;
 
-    Rectangle rectangle1(points);
+    QList<QPoint> points = {QPoint(0, 0), QPoint(100, 0),QPoint(100, -100), QPoint(0, -100)};
+
+    Rectangle rectangle1(window.getViewportPoints(points));
 
     Matrix B;
-    Matrix A = B.Translate(10, 10).Scale(2, 2).Rotate(30) * B.Translate(100, 100);
+    //Matrix A = B.Translate(10, 10).Scale(2, 2).Rotate(30) * B.Translate(100, 100);
 
+    /*
     points = A.MultiplicatePointList(points);
     Rectangle rectangle2(points);
     std::cout << points[1].y() << std::endl;
@@ -43,9 +50,11 @@ void MainWindow::paintEvent(QPaintEvent *event){
             std::cout << std::endl;
         }
 
-
+    */
     displayFile.append(&rectangle1);
-    displayFile.append(&rectangle2);
+    //displayFile.append(&rectangle2);
+
+
 
     for(GenericObject *obj : displayFile){
         obj->draw(&painter);
@@ -56,5 +65,11 @@ void MainWindow::paintEvent(QPaintEvent *event){
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    close();
 }
 
