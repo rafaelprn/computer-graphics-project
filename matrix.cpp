@@ -21,6 +21,8 @@ Matrix Matrix::Translate(float dX, float dY){
     result.matrix[0][2] = dX;
     result.matrix[1][2] = dY;
 
+    result = result * (*this);
+
     return result;
 }
 
@@ -28,6 +30,8 @@ Matrix Matrix::Scale(float sX, float sY){
     Matrix result;
     result.matrix[0][0] = sX;
     result.matrix[1][1] = sY;
+
+    result = result * (*this);
 
     return result;
 }
@@ -38,6 +42,8 @@ Matrix Matrix::Rotate(float angle){
     result.matrix[1][0] = sin(angle*(PI/180));
     result.matrix[0][1] = -sin(angle*(PI/180));
     result.matrix[1][1] = cos(angle*(PI/180));
+
+    result = result * (*this);
 
     return result;
 }
