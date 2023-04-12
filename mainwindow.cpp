@@ -17,6 +17,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 }
 
+float X1 = -200;
+float X2 = 200;
+float Y1 = -200;
+float Y2 = 200;
+
+
 void MainWindow::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     QPen pen;
@@ -26,7 +32,7 @@ void MainWindow::paintEvent(QPaintEvent *event){
 
     QList<GenericObject *> displayFile;
 
-    Window window(0, 800, 0, 600, -300, 100, -200, 200);
+    Window window(0, 800, 0, 600, X1, X2, Y1, Y2); // (Xvpmin, Xvpmax, Yvpmin, Yvpmax, Xwmin, Xwmax, Ywmin, Ywmax)
 //    std::cout << window.getViewportX(0) << std::endl;
 //    std::cout << window.getViewportY(0) << std::endl;
 
@@ -68,8 +74,15 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_Fechar_clicked()
 {
     close();
+}
+
+void MainWindow::on_Translate_clicked(float X1, float X2)
+{
+    X1 += 200;
+    X2 += 200;
+    Window window(0, 800, 0, 600, -100, 100, Y1, Y2);
 }
 

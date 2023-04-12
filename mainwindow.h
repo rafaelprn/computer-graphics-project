@@ -18,7 +18,9 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_Fechar_clicked();
+
+    void on_Translate_clicked(float X1, float X2);
 
 private:
     Ui::MainWindow *ui;
