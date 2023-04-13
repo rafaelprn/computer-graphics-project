@@ -9,7 +9,7 @@ class Window
 public:
     float Xvpmin, Xvpmax, Yvpmin, Yvpmax, Xwmin, Xwmax, Ywmin, Ywmax;
     float ViewportAspectX, ViewportAspectY, WindowAspectX, WindowAspectY;
-    Window(float Xvpmin,float Xvpmax,float Yvpmin,float Yvpmax,float Xwmin,float Xwmax,float Ywmin,float Ywmax);
+    Window(QList<QPoint> viewport, QList<QPoint> windowPoints);
     //ponto central da window p0 (x0, y0)
     //extremos da window sao (-1, -1) (1, 1)
     float getViewportX(float x);

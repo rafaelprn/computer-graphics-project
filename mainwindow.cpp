@@ -17,11 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 }
 
-float X1 = -200;
-float X2 = 200;
-float Y1 = -200;
-float Y2 = 200;
+QList<QPoint> windowPoints = {QPoint(-200, -200), QPoint(200, 200)};
 
+float vpXMax = 400;
+float vpYMax = 300;
 
 void MainWindow::paintEvent(QPaintEvent *event){
     QPainter painter(this);
@@ -32,18 +31,35 @@ void MainWindow::paintEvent(QPaintEvent *event){
 
     QList<GenericObject *> displayFile;
 
-    Window window(0, 800, 0, 600, X1, X2, Y1, Y2); // (Xvpmin, Xvpmax, Yvpmin, Yvpmax, Xwmin, Xwmax, Ywmin, Ywmax)
+    QList<QPoint> viewportPoints = {QPoint(0, vpYMax), QPoint(vpXMax, vpYMax),QPoint(vpXMax, 0), QPoint(0, 0)};
+    Rectangle viewport(viewportPoints);
+
+    viewport.draw(&painter);
+
+    QPen pen2;
+    pen2.setColor(Qt::blue);
+    pen2.setWidth(0);
+    pen2.setColor(Qt::red);
+    painter.setPen(pen2);
+
+    Window window(viewportPoints, windowPoints); // (Xvpmin, Xvpmax, Yvpmin, Yvpmax, Xwmin, Xwmax, Ywmin, Ywmax)
 //    std::cout << window.getViewportX(0) << std::endl;
 //    std::cout << window.getViewportY(0) << std::endl;
 
     QList<QPoint> points = {QPoint(0, 0), QPoint(100, 0),QPoint(100, -100), QPoint(0, -100)};
 
     Rectangle rectangle1(window.getViewportPoints(points));
+    displayFile.append(&rectangle1);
 
-    Matrix B;
-    //Matrix A = B.Translate(10, 10).Scale(2, 2).Rotate(30) * B.Translate(100, 100);
+    for(GenericObject *obj : displayFile){
+        obj->draw(&painter);
+    }
 
-    /*
+
+    /*Matrix B;
+    Matrix A = B.Translate(10, 10).Scale(2, 2).Rotate(30) * B.Translate(100, 100);
+
+
     points = A.MultiplicatePointList(points);
     Rectangle rectangle2(points);
     std::cout << points[1].y() << std::endl;
@@ -57,14 +73,6 @@ void MainWindow::paintEvent(QPaintEvent *event){
         }
 
     */
-    displayFile.append(&rectangle1);
-    //displayFile.append(&rectangle2);
-
-
-
-    for(GenericObject *obj : displayFile){
-        obj->draw(&painter);
-    }
 
 }
 
@@ -79,10 +87,72 @@ void MainWindow::on_Fechar_clicked()
     close();
 }
 
-void MainWindow::on_Translate_clicked(float X1, float X2)
+void MainWindow::on_pushButton_clicked()
 {
-    X1 += 200;
-    X2 += 200;
-    Window window(0, 800, 0, 600, -100, 100, Y1, Y2);
+    Matrix A = A.Translate(-10, 0);
+    windowPoints = A.MultiplicatePointList(windowPoints);
+    update();
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    Matrix A = A.Translate(10, 0);
+    windowPoints = A.MultiplicatePointList(windowPoints);
+    update();
+}
+
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    Matrix A = A.Translate(0, 10);
+    windowPoints = A.MultiplicatePointList(windowPoints);
+    update();
+}
+
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    Matrix A = A.Translate(0, -10);
+    windowPoints = A.MultiplicatePointList(windowPoints);
+    update();
+}
+
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    vpXMax += 50;
+    update();
+}
+
+
+void MainWindow::on_pushButton_6_clicked()
+{
+    vpYMax += 50;
+    update();
+}
+
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    vpXMax = 400;
+    vpYMax = 300;
+    update();
+}
+
+
+void MainWindow::on_pushButton_8_clicked()
+{
+    Matrix A = A.Scale(0.5,0.5);
+    windowPoints = A.MultiplicatePointList(windowPoints);
+    update();
+}
+
+
+void MainWindow::on_pushButton_9_clicked()
+{
+    Matrix A = A.Scale(1.5,1.5);
+    windowPoints = A.MultiplicatePointList(windowPoints);
+    update();
 }
 

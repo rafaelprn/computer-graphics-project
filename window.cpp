@@ -1,13 +1,13 @@
 #include "window.h"
 
-Window::Window(float Xvpmin,float Xvpmax,float Yvpmin,float Yvpmax,float Xwmin,float Xwmax,float Ywmin,float Ywmax)
+Window::Window(QList<QPoint> viewport, QList<QPoint> windowPoints)
 {
-    this->Xwmin = Xwmin;
-    this->Ywmin = Ywmin;
-    this->WindowAspectX = Xwmax - this->Xwmin;
-    this->ViewportAspectX = Xvpmax - Xvpmin;
-    this->WindowAspectY = Ywmax - this->Ywmin;
-    this->ViewportAspectY = Yvpmax - Yvpmin;
+    this->Xwmin = windowPoints[0].x();
+    this->Ywmin = windowPoints[0].y();
+    this->WindowAspectX = windowPoints[1].x() - this->Xwmin;
+    this->ViewportAspectX = viewport[1].x() - viewport[0].x();
+    this->WindowAspectY = windowPoints[1].y() - this->Ywmin;
+    this->ViewportAspectY = viewport[0].y() - viewport[2].y();
 
 }
 
