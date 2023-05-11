@@ -7,6 +7,15 @@ Point::Point(float x, float y)
     this->point = QPoint(x, y);
 }
 
+Point::Point(float x, float y, float z)
+{
+    this->x = x;
+    this->y = y;
+    this->z = z;
+    this->point = QPoint(x, y);
+}
+
+
 QList<QPoint> Point::transformPointToQPoint(QList<Point> list) {
     QList<QPoint> newList;
     for(const Point &point : list) {
