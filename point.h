@@ -7,10 +7,11 @@
 class Point: public GenericObject, public QPoint
 {
 public:
-    float x, y, z;
+    float x, y, z, h;
     QPoint point;
     Point(float x, float y);
     Point(float x, float y, float z);
+    Point(float x, float y, float z, float h);
 
     QPoint transformPointToQPoint(Point point);
     QList<QPoint> transformPointToQPoint(QList<Point> list);

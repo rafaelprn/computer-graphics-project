@@ -76,6 +76,8 @@ void MainWindow::paintEvent(QPaintEvent *event){
 
 }
 
+//BUTTONS
+
 MainWindow::~MainWindow()
 {
     delete ui;
