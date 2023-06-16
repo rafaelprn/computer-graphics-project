@@ -9,6 +9,7 @@
 #include <iostream>
 #include <pentagon.h>
 #include "window.h"
+#include <readobj.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -53,6 +54,14 @@ void MainWindow::paintEvent(QPaintEvent *event){
 
     for(GenericObject *obj : displayFile){
         obj->draw(&painter);
+    }
+
+
+    ReadOBJ objetobola(0);
+
+    objetobola.lerOBJ(window);
+    for(Line linha : objetobola.objectLines){
+        linha.draw(&painter);
     }
 
 

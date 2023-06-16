@@ -10,8 +10,10 @@ public:
     float x, y, z, h;
     QPoint point;
     Point(float x, float y);
-    Point(float x, float y, float z);
-    Point(float x, float y, float z, float h);
+    //Point(float x, float y, float z);
+    //Point(float x, float y, float z, float h);
+    Point(double x, double y, double z, double h);
+    Point(double x, double y, double z);
 
     QPoint transformPointToQPoint(Point point);
     QList<QPoint> transformPointToQPoint(QList<Point> list);

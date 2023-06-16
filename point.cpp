@@ -7,7 +7,8 @@ Point::Point(float x, float y)
     this->point = QPoint(x, y);
 }
 
-Point::Point(float x, float y, float z)
+
+Point::Point(double x, double y, double z)
 {
     this->x = x;
     this->y = y;
@@ -15,7 +16,8 @@ Point::Point(float x, float y, float z)
     this->point = QPoint(x, y);
 }
 
-Point::Point(float x, float y, float z, float h)
+
+Point::Point(double x, double y, double z, double h)
 {
     this->x = x;
     this->y = y;

@@ -14,6 +14,7 @@ public:
     Line();
     Line(float x1, float y1, float z1, float x2, float y2, float z2);
     Line(float x1, float y1, float x2, float y2);
+    Line(QPoint point1, QPoint point2);
 
     Line(Point point1, Point point2);
     QLine transformLineToQLine(Line line);
