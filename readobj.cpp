@@ -16,7 +16,7 @@ ReadOBJ::ReadOBJ(int x)
 
 
 void ReadOBJ::lerOBJ(Window window){
-    QFile file("../computer-graphics-project/eyeball.obj"); //endereco do arquivo
+    QFile file("../computer-graphics-project/Charizard.obj"); //endereco do arquivo
     Point p1(0, 0, 0);
 
     QString linha;
@@ -34,7 +34,7 @@ void ReadOBJ::lerOBJ(Window window){
         linha = fileText.readLine().trimmed(); //le a linha tirando espaco
         if(regex_match(linha.toStdString(), vReg)){ //se atende o regex
             auto vert = linha.split(u' '); //divide nos espacos
-            QList<Point> pontos = {Point(vert[1].toDouble(), vert[2].toDouble(), vert[3].toDouble())}; //pega os 3 pontos
+            QList<Point> pontos = {Point(vert[1].toDouble() * 100, vert[2].toDouble() * 100, vert[3].toDouble() * 100)}; //pega os 3 pontos
             QList<QPoint> pointToVp = p1.transformPointToQPoint(pontos); //transforma eles em qpoint
             this->objectPoints.append(window.getViewportPoints(pointToVp)); //passa pra coordenada de viewport e salva na lista de pontos
 
@@ -70,8 +70,5 @@ void ReadOBJ::lerOBJ(Window window){
             }
         }while(!linha.isNull()); //ate o final do arquivo
         file.close(); //fecha
-
-
-
 }
 

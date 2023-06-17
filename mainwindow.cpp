@@ -10,6 +10,7 @@
 #include <pentagon.h>
 #include "window.h"
 #include <readobj.h>
+#include "clipping.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -52,10 +53,11 @@ void MainWindow::paintEvent(QPaintEvent *event){
     Rectangle rectangle1(window.getViewportPoints(points));
     displayFile.append(&rectangle1);
 
+    //Clipping c1(windowPoints);
+
     for(GenericObject *obj : displayFile){
         obj->draw(&painter);
     }
-
 
     ReadOBJ objetobola(0);
 
@@ -152,7 +154,10 @@ void MainWindow::on_pushButton_7_clicked()
 
 void MainWindow::on_pushButton_8_clicked()
 {
-    Matrix A = A.Scale(0.5,0.5);
+    if(windowPoints[0].x() < 50 && windowPoints[1]. x() < 50){
+        return;
+    }
+    Matrix A = A.Scale(0.5,0.5); //diminui
     windowPoints = A.MultiplicatePointList(windowPoints);
     update();
 }
@@ -160,7 +165,7 @@ void MainWindow::on_pushButton_8_clicked()
 
 void MainWindow::on_pushButton_9_clicked()
 {
-    Matrix A = A.Scale(1.5,1.5);
+    Matrix A = A.Scale(1.5,1.5); //aumenta
     windowPoints = A.MultiplicatePointList(windowPoints);
     update();
 }
