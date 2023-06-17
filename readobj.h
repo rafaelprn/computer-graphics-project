@@ -13,11 +13,12 @@ using namespace std;
 class ReadOBJ
 {
 public:
-    int x;
-    QList<QPoint> objectPoints;
-    QList<Line> objectLines;
-    ReadOBJ(int x);
-    void lerOBJ(Window window);
+    int x; //pos inicial
+    QList<QPoint> objectPoints; //lista de todos os pontos do obj
+    QList<Line> objectLines; //lista de todas as linhas do obj
+
+    ReadOBJ(int x); //construtor
+    void lerOBJ(Window window); //vai ler o objeto
 };
 
 #endif // READOBJ_H

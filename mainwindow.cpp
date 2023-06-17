@@ -65,10 +65,9 @@ void MainWindow::paintEvent(QPaintEvent *event){
     }
 
 
+
     /*Matrix B;
     Matrix A = B.Translate(10, 10).Scale(2, 2).Rotate(30) * B.Translate(100, 100);
-
-
     points = A.MultiplicatePointList(points);
     Rectangle rectangle2(points);
     std::cout << points[1].y() << std::endl;
@@ -80,7 +79,6 @@ void MainWindow::paintEvent(QPaintEvent *event){
             }
             std::cout << std::endl;
         }
-
     */
 
 }
