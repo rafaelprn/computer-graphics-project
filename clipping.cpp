@@ -32,7 +32,7 @@ void Clipping::defineRC(Point point, int regionCode[4]) {
        } else {
            regionCode[3] = 0;
        }
-
+       //std::cout << regionCode[0] << regionCode[1] << regionCode[2] << regionCode[3] << std::endl;
     }
 
 Line Clipping::createClippedLine(Line line, int regionCodeP1[4], int regionCodeP2[4]) {
@@ -74,6 +74,12 @@ Line Clipping::createClippedLine(Line line, int regionCodeP1[4], int regionCodeP
 Line Clipping::equationLeft(Line line) {
     float m;
     m = (float)(line.y2 - line.y1) / (line.x2 - line.x1);
+    if(line.x1 > line.x2){
+        line.y2 = (m * (this->windowPoints[0].x() - line.x1) + line.y1);
+        line.x2= this->windowPoints[0].x();
+
+        return line;
+    }
     line.y1 = (m * (this->windowPoints[0].x() - line.x1) + line.y1);
     line.x1= this->windowPoints[0].x();
 
@@ -83,6 +89,12 @@ Line Clipping::equationLeft(Line line) {
 Line Clipping::equationRight(Line line) {
     float m;
     m = (float)(line.y2 - line.y1) / (line.x2 - line.x1);
+    if(line.x1 > line.x2){
+        line.y1 = (m * (this->windowPoints[1].x() - line.x1) + line.y1);
+        line.x1 = this->windowPoints[1].x();
+
+        return line;
+    }
     line.y2 = (m * (this->windowPoints[1].x() - line.x1) + line.y1);
     line.x2 = this->windowPoints[1].x();
 
@@ -92,6 +104,11 @@ Line Clipping::equationRight(Line line) {
 Line Clipping::equationTop(Line line) {
     float m;
     m = (float)(line.y2 - line.y1) / (line.x2 - line.x1);
+    if(line.y1 > line.y2){
+        line.x1 = (line.x1) + (this->windowPoints[1].y() - line.y1) / m;
+        line.y1 = this->windowPoints[1].y();
+        return line;
+    }
     line.x2 = (line.x1) + (this->windowPoints[1].y() - line.y1) / m;
     line.y2 = this->windowPoints[1].y();
 
@@ -101,6 +118,11 @@ Line Clipping::equationTop(Line line) {
 Line Clipping::equationBottom(Line line) {
     float m;
     m = (float)(line.y2 - line.y1) / (line.x2 - line.x1);
+    if(line.y1 > line.y2){
+        line.x2 = (line.x1) + (this->windowPoints[0].y() - line.y1) / m;
+        line.y2 = this->windowPoints[0].y();
+        return line;
+    }
     line.x1 = (line.x1) + (this->windowPoints[0].y() - line.y1) / m;
     line.y1 = this->windowPoints[0].y();
 
