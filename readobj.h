@@ -18,7 +18,7 @@ public:
     QList<Line> objectLines; //lista de todas as linhas do obj
 
     ReadOBJ(int x); //construtor
-    void lerOBJ(Window window); //vai ler o objeto
+    void lerOBJ(); //vai ler o objeto
 };
 
 #endif // READOBJ_H

@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QPainter>
 #include <QLine>
+#include "line.h"
 #include <rectangle.h>
 #include <triangle.h>
 #include <geometrictransformations.h>
@@ -71,11 +72,11 @@ void MainWindow::paintEvent(QPaintEvent *event){
         obj->draw(&painter);
     }
 
-
     ReadOBJ objetobola(0);
 
-    objetobola.lerOBJ(window);
-    for(Line linha : c1.doClipping(objetobola.objectLines)){
+    objetobola.lerOBJ();
+    QList<Line> clippedLines = window.getViewportLines(c1.doClipping(objetobola.objectLines));
+    for(Line linha : clippedLines){
         linha.draw(&painter);
     }
 

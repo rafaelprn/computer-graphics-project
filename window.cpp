@@ -26,3 +26,15 @@ QList<QPoint> Window::getViewportPoints(QList<QPoint> points){
     }
     return newPoints;
 }
+
+QList<Line> Window::getViewportLines(QList<Line> lines){
+    QList<Line> newLines;
+    for(Line line : lines){
+        QList<QPoint> linePoints;
+        linePoints.append(QPoint(line.x1, line.y1));
+        linePoints.append(QPoint(line.x2, line.y2));
+        linePoints = this->getViewportPoints(linePoints);
+        newLines.append(Line(linePoints[0], linePoints[1]));
+    }
+    return newLines;
+}

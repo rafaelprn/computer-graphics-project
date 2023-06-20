@@ -2,6 +2,8 @@
 #define WINDOW_H
 #include <QList>
 #include <QPoint>
+//#include <QLine>
+#include "line.h"
 
 
 class Window
@@ -15,6 +17,7 @@ public:
     float getViewportX(float x);
     float getViewportY(float y);
     QList<QPoint> getViewportPoints(QList<QPoint> points);
+    QList<Line> getViewportLines(QList<Line> lines);
 };
 
 #endif // WINDOW_H

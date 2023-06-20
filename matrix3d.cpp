@@ -98,7 +98,7 @@ QList<QPoint> Matrix3d::Multiplicate3dPointList(QList<QPoint> points){
 
       pMatrix[0][0] = point.x();
       pMatrix[1][0] = point.y();
-      pMatrix[2][0] = point.z();
+      //pMatrix[2][0] = point.z();
       pMatrix[3][0] = 1;
 
       for(int col=0; col<4; col++){

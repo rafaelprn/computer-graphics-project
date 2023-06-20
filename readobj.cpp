@@ -15,7 +15,7 @@ ReadOBJ::ReadOBJ(int x)
 }
 
 
-void ReadOBJ::lerOBJ(Window window){
+void ReadOBJ::lerOBJ(){
     QFile file("../computer-graphics-project/Charizard.obj"); //endereco do arquivo
     Point p1(0, 0, 0);
 
@@ -36,7 +36,7 @@ void ReadOBJ::lerOBJ(Window window){
             auto vert = linha.split(u' '); //divide nos espacos
             QList<Point> pontos = {Point(vert[1].toDouble() * 100, vert[2].toDouble() * 100, vert[3].toDouble() * 100)}; //pega os 3 pontos
             QList<QPoint> pointToVp = p1.transformPointToQPoint(pontos); //transforma eles em qpoint
-            this->objectPoints.append(window.getViewportPoints(pointToVp)); //passa pra coordenada de viewport e salva na lista de pontos
+            this->objectPoints.append(pointToVp); //passa pra coordenada de viewport e salva na lista de pontos
 
             //std::cout << "oi" << std::endl;
         }
@@ -59,8 +59,6 @@ void ReadOBJ::lerOBJ(Window window){
                     int firstPoint = faces[1].split(u'/')[0].toInt() - 1; //fica no primeiro
                                                                             //pq tem q conectar todos entre si
 
-                    //std::cout << currentPoint << std::endl; //printar todas as faces lidas
-
                     //objectLines = lista de linhas
                     this->objectLines.append(Line(this->objectPoints.at(currentPoint), this->objectPoints.at(nextPoint))); //faz uma linha do atual ao prox
                     if(i == faces.length()-2){ //quando o current for o ultimo
@@ -71,4 +69,3 @@ void ReadOBJ::lerOBJ(Window window){
         }while(!linha.isNull()); //ate o final do arquivo
         file.close(); //fecha
 }
-
