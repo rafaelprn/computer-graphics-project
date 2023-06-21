@@ -6,6 +6,7 @@
 #include "line.h"
 #include "point.h"
 #include "window.h"
+#include <QString>
 
 
 using namespace std;
@@ -13,11 +14,12 @@ using namespace std;
 class ReadOBJ
 {
 public:
+    QString fileName;
     int x; //pos inicial
     QList<QPoint> objectPoints; //lista de todos os pontos do obj
     QList<Line> objectLines; //lista de todas as linhas do obj
 
-    ReadOBJ(int x); //construtor
+    ReadOBJ(QString fileName, int x); //construtor
     void lerOBJ(); //vai ler o objeto
 };
 

@@ -5,9 +5,9 @@ Window::Window(QList<QPoint> viewport, QList<QPoint> windowPoints)
     this->Xwmin = windowPoints[0].x();
     this->Ywmin = windowPoints[0].y();
     this->WindowAspectX = windowPoints[1].x() - this->Xwmin;
-    this->ViewportAspectX = viewport[1].x() - viewport[0].x();
+    this->ViewportAspectX = viewport[1].x();
     this->WindowAspectY = windowPoints[1].y() - this->Ywmin;
-    this->ViewportAspectY = viewport[0].y() - viewport[2].y();
+    this->ViewportAspectY = viewport[0].y();
 
 }
 

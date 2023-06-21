@@ -38,8 +38,10 @@ Line::Line(Point point1, Point point2)
 {
     this->x1 = point1.x;
     this->y1 = point1.y;
+    this->z1 = point1.z;
     this->x2 = point2.x;
     this->y2 = point2.y;
+    this->z2 = point2.z;
     this->line = QLine(this->x1, this->y1, this->x2, this->y2);
 }
 

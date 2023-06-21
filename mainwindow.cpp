@@ -5,25 +5,40 @@
 #include "line.h"
 #include <rectangle.h>
 #include <triangle.h>
-#include <geometrictransformations.h>
 #include <matrix.h>
 #include <iostream>
 #include <pentagon.h>
 #include "window.h"
 #include <readobj.h>
 #include "clipping.h"
+#include "matrix3d.h"
+
+ReadOBJ objCharizard("Charizard", 0);
+ReadOBJ objCubone("cubone", 0);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    objCharizard.lerOBJ();
+    objCubone.lerOBJ();
 }
 
 QList<QPoint> windowPoints = {QPoint(-200, -200), QPoint(200, 200)};
 
 float vpXMax = 400;
 float vpYMax = 300;
+int rx = 0;
+int ry = 0;
+int rz = 0;
+int tx = 0;
+int ty = 0;
+int tz = 0;
+float sx = 1;
+float sy = 1;
+float sz = 1;
+
 
 void MainWindow::paintEvent(QPaintEvent *event){
     QPainter painter(this);
@@ -46,55 +61,26 @@ void MainWindow::paintEvent(QPaintEvent *event){
     painter.setPen(pen2);
 
     Window window(viewportPoints, windowPoints); // (Xvpmin, Xvpmax, Yvpmin, Yvpmax, Xwmin, Xwmax, Ywmin, Ywmax)
-//    std::cout << window.getViewportX(0) << std::endl;
-//    std::cout << window.getViewportY(0) << std::endl;
 
-    QList<QPoint> points = {QPoint(0, 0), QPoint(100, 0),QPoint(100, -100), QPoint(0, -100)};
+    Matrix3d m1, m2;
+    m1 = m2.Rotate(rx, ry, rz) * m2.Translate(tx, ty, tz) * m2.Scale(sx, sy, sz);
 
     Clipping c1(windowPoints);
-
-    Rectangle rectangle1(window.getViewportPoints(points));
-    displayFile.append(&rectangle1);
-
-    /*
-    QList<Line> testObject = {Line(50, 50, 200, 200), Line(20, 100, 200, 50)};
-    testObject = c1.doClipping(testObject);
-    QList<QPoint> line1Points = window.getViewportPoints({QPoint(testObject[0].x1,testObject[0].y1), QPoint(testObject[0].x2, testObject[0].y2)});
-    QList<QPoint> line2Points = window.getViewportPoints({QPoint(testObject[1].x1,testObject[1].y1), QPoint(testObject[1].x2, testObject[1].y2)});
-    Line newViewportLine1(line1Points[0].x(), line1Points[0].y(), line1Points[1].x(), line1Points[1].y());
-    Line newViewportLine2(line2Points[0].x(), line2Points[0].y(), line2Points[1].x(), line2Points[1].y());
-    //std::cout << newViewportLine1.x1 << " " << newViewportLine1.y1 << " " << newViewportLine1.x2 << " " << newViewportLine1.y2 <<std::endl;
-    displayFile.append(&newViewportLine1);
-    displayFile.append(&newViewportLine2);
-    */
 
     for(GenericObject *obj : displayFile){
         obj->draw(&painter);
     }
 
-    ReadOBJ objetobola(0);
-
-    objetobola.lerOBJ();
-    QList<Line> clippedLines = window.getViewportLines(c1.doClipping(objetobola.objectLines));
+    objCharizard.objectLines = m1.Multiply3dLineList(objCharizard.objectLines);
+    QList<Line> clippedLines = window.getViewportLines(c1.doClipping(objCharizard.objectLines));
     for(Line linha : clippedLines){
         linha.draw(&painter);
     }
-
-    /*Matrix B;
-    Matrix A = B.Translate(10, 10).Scale(2, 2).Rotate(30) * B.Translate(100, 100);
-    points = A.MultiplicatePointList(points);
-    Rectangle rectangle2(points);
-    std::cout << points[1].y() << std::endl;
-
-        // Print the result
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
-                std::cout << A.matrix[i][j] << " ";
-            }
-            std::cout << std::endl;
-        }
-    */
-
+    objCubone.objectLines = m1.Multiply3dLineList(objCubone.objectLines);
+    clippedLines = window.getViewportLines(c1.doClipping(objCubone.objectLines));
+    for(Line linha : clippedLines){
+        linha.draw(&painter);
+    }
 }
 
 //BUTTONS
@@ -179,6 +165,107 @@ void MainWindow::on_pushButton_9_clicked()
 {
     Matrix A = A.Scale(1.5,1.5); //aumenta
     windowPoints = A.MultiplicatePointList(windowPoints);
+    update();
+}
+
+void MainWindow::on_horizontalSlider_3_sliderMoved(int pos) //rx
+{
+    rx = pos;
+    update();
+}
+
+void MainWindow::on_horizontalSlider_2_sliderMoved(int pos) //ry
+{
+    ry = pos;
+    update();
+}
+
+void MainWindow::on_horizontalSlider_sliderMoved(int pos) //rz
+{
+    rz = pos;
+    update();
+}
+
+void MainWindow::on_pushButton_13_clicked() //tx-
+{
+    tx = -10;
+    update();
+}
+
+
+void MainWindow::on_pushButton_10_clicked() //tx+
+{
+    tx = 10;
+    update();
+}
+
+
+void MainWindow::on_pushButton_14_clicked() //ty-
+{
+    ty = -10;
+    update();
+}
+
+
+void MainWindow::on_pushButton_11_clicked() //ty+
+{
+    ty = 10;
+    update();
+}
+
+
+void MainWindow::on_pushButton_15_clicked() //tz-
+{
+    tz = -10;
+    update();
+}
+
+
+void MainWindow::on_pushButton_12_clicked() //tz+
+{
+    tz = 10;
+    update();
+}
+
+
+void MainWindow::on_pushButton_20_clicked() //sx-
+{
+    sx = 0.8;
+    update();
+}
+
+
+void MainWindow::on_pushButton_21_clicked() //sx+
+{
+    sx = 1.2;
+    update();
+}
+
+
+void MainWindow::on_pushButton_18_clicked() //sy-
+{
+    sy = 0.8;
+    update();
+}
+
+
+void MainWindow::on_pushButton_16_clicked() //sy+
+{
+    sy = 1.2;
+    update();
+}
+
+
+void MainWindow::on_pushButton_19_clicked() //sz-
+{
+    sz = 0.8;
+    update();
+}
+
+
+void MainWindow::on_pushButton_17_clicked() //sz+
+{
+    sz = 1.2;
     update();
 }
 

@@ -9,14 +9,15 @@
 #include "point.h"
 #include "line.h"
 
-ReadOBJ::ReadOBJ(int x)
+ReadOBJ::ReadOBJ(QString fileName, int x)
 {
+    this->fileName = fileName;
     this->x = x;
 }
 
 
 void ReadOBJ::lerOBJ(){
-    QFile file("../computer-graphics-project/Charizard.obj"); //endereco do arquivo
+    QFile file("../computer-graphics-project/"+this->fileName+".obj"); //endereco do arquivo
     Point p1(0, 0, 0);
 
     QString linha;
@@ -34,7 +35,7 @@ void ReadOBJ::lerOBJ(){
         linha = fileText.readLine().trimmed(); //le a linha tirando espaco
         if(regex_match(linha.toStdString(), vReg)){ //se atende o regex
             auto vert = linha.split(u' '); //divide nos espacos
-            QList<Point> pontos = {Point(vert[1].toDouble() * 100, vert[2].toDouble() * 100, vert[3].toDouble() * 100)}; //pega os 3 pontos
+            QList<Point> pontos = {Point(vert[1].toDouble() * 100, vert[2].toDouble() * 100, vert[3].toDouble() * 100, 1)}; //pega os 3 pontos
             QList<QPoint> pointToVp = p1.transformPointToQPoint(pontos); //transforma eles em qpoint
             this->objectPoints.append(pointToVp); //passa pra coordenada de viewport e salva na lista de pontos
 

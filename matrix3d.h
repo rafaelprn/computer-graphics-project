@@ -3,6 +3,7 @@
 #include <QList>
 #include <QPoint>
 #include <vector>
+#include "line.h"
 
 class Matrix3d
 {
@@ -12,10 +13,8 @@ public:
 
     Matrix3d Translate(float dX, float dY, float dZ);
     Matrix3d Scale(float sX, float sY, float sZ);
-    Matrix3d RotateX(float angle);
-    Matrix3d RotateY(float angle);
-    Matrix3d RotateZ(float angle);
-    QList<QPoint> Multiplicate3dPointList(QList<QPoint> points);
+    Matrix3d Rotate(float angleX, float angleY, float angleZ);
+    QList<Line> Multiply3dLineList(const QList<Line>& lines) ;
     Matrix3d operator*(const Matrix3d& other) const;
 };
 

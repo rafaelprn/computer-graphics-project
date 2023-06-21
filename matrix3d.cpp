@@ -48,73 +48,79 @@ Matrix3d Matrix3d::Scale(float sX, float sY, float sZ){
     return result;
 }
 
-Matrix3d Matrix3d::RotateZ(float angle){
+Matrix3d Matrix3d::Rotate(float angleX, float angleY, float angleZ)
+{
     Matrix3d result;
-    result.matrix[0][0] = cos(angle*(PI/180));
-    result.matrix[1][0] = sin(angle*(PI/180));
-    result.matrix[0][1] = -sin(angle*(PI/180));
-    result.matrix[1][1] = cos(angle*(PI/180));
 
-    result = result * (*this);
+    float radianX = angleX * (PI / 180);
+    float radianY = angleY * (PI / 180);
+    float radianZ = angleZ * (PI / 180);
+
+    result.matrix[0][0] = cos(radianY)*cos(radianZ);
+    result.matrix[0][1] = -cos(radianY)*sin(radianZ);
+    result.matrix[0][2] = sin(radianY);
+    result.matrix[0][3] = 0;
+    result.matrix[1][0] = (sin(radianX)*sin(radianY)*cos(radianZ)) + (cos(radianX)*sin(radianZ));
+    result.matrix[1][1] = (cos(radianX)*cos(radianZ)) - (sin(radianX)*sin(radianY)*sin(radianZ));
+    result.matrix[1][2] = -sin(radianX)*cos(radianY);
+    result.matrix[1][3] = 0;
+    result.matrix[2][0] = (sin(radianX)*sin(radianZ)) - (cos(radianX)*sin(radianY)*cos(radianZ));
+    result.matrix[2][1] = (cos(radianX)*sin(radianY)*sin(radianZ)) + (sin(radianX)*cos(radianZ));
+    result.matrix[2][2] = cos(radianX)*cos(radianY);
+    result.matrix[2][3] = 0;
+    result.matrix[3][0] = 0;
+    result.matrix[3][1] = 0;
+    result.matrix[3][2] = 0;
+    result.matrix[3][3] = 1;
+
+    result = (*this) * result;
 
     return result;
 }
 
-Matrix3d Matrix3d::RotateX(float angle){
-    Matrix3d result;
-    result.matrix[1][1] = cos(angle*(PI/180));
-    result.matrix[2][1] = sin(angle*(PI/180));
-    result.matrix[1][2] = -sin(angle*(PI/180));
-    result.matrix[2][2] = cos(angle*(PI/180));
+QList<Line> Matrix3d::Multiply3dLineList(const QList<Line>& lines) {
+  QList<Line> transformedLines;
 
-    result = result * (*this);
+  for (const Line& line : lines) {
+    Line transformedLine;
 
-    return result;
-}
+    // Multiplying point 1
+    float pMatrix1[4][1] = {{line.x1}, {line.y1}, {line.z1}, {1}};
+    float newMatrix1[4][1] = {{0}, {0}, {0}, {0}};
 
-Matrix3d Matrix3d::RotateY(float angle){
-    Matrix3d result;
-    result.matrix[0][0] = cos(angle*(PI/180));
-    result.matrix[0][2] = sin(angle*(PI/180));
-    result.matrix[2][0] = -sin(angle*(PI/180));
-    result.matrix[2][2] = cos(angle*(PI/180));
-
-    result = result * (*this);
-
-    return result;
-}
-
-QList<QPoint> Matrix3d::Multiplicate3dPointList(QList<QPoint> points){
-  float newMatrix[4][1];
-  float pMatrix[4][1];
-  QList<QPoint> transformedPoints;
-
-  newMatrix[0][0] = 0;
-  newMatrix[1][0] = 0;
-  newMatrix[2][0] = 0;
-  newMatrix[3][0] = 0;
-
-  for(QPoint point : points){
-
-      pMatrix[0][0] = point.x();
-      pMatrix[1][0] = point.y();
-      //pMatrix[2][0] = point.z();
-      pMatrix[3][0] = 1;
-
-      for(int col=0; col<4; col++){
-          float pointSum = 0;
-          for(int row=0; row<4; row++){
-              pointSum += this->matrix[col][row] * pMatrix[row][0];
-          }
-          newMatrix[col][0] = pointSum;
+    for (int row = 0; row < 4; row++) {
+      float pointSum = 0;
+      for (int col = 0; col < 4; col++) {
+        pointSum += this->matrix[row][col] * pMatrix1[col][0];
       }
+      newMatrix1[row][0] = pointSum;
+    }
 
-      QPoint transformedPoint(newMatrix[0][0], newMatrix[1][0]);
-      transformedPoints.append(transformedPoint);
+    transformedLine.x1 = newMatrix1[0][0];
+    transformedLine.y1 = newMatrix1[1][0];
+    transformedLine.z1 = newMatrix1[2][0];
+
+    // Multiplying point 2
+    float pMatrix2[4][1] = {{line.x2}, {line.y2}, {line.z2}, {1}};
+    float newMatrix2[4][1] = {{0}, {0}, {0}, {0}};
+
+    for (int row = 0; row < 4; row++) {
+      float pointSum = 0;
+      for (int col = 0; col < 4; col++) {
+        pointSum += this->matrix[row][col] * pMatrix2[col][0];
+      }
+      newMatrix2[row][0] = pointSum;
+    }
+
+    transformedLine.x2 = newMatrix2[0][0];
+    transformedLine.y2 = newMatrix2[1][0];
+    transformedLine.z2 = newMatrix2[2][0];
+
+    transformedLines.append(transformedLine);
   }
-
-  return transformedPoints;
+  return transformedLines;
 }
+
 
 Matrix3d Matrix3d::operator*(const Matrix3d& other) const {
     Matrix3d result;
@@ -123,7 +129,7 @@ Matrix3d Matrix3d::operator*(const Matrix3d& other) const {
         for (int j = 0; j < 4; j++) {
             result.matrix[i][j] = 0;
             for (int k = 0; k < 4; k++) {
-                result.matrix[i][j] += matrix[i][k] * other.matrix[k][j];
+                result.matrix[i][j] += this->matrix[i][k] * other.matrix[k][j];
             }
         }
     }
